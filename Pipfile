@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.11"
+
+[packages]
+customtkinter = "~=5.2"
+matplotlib = "~=3.7"
+pandas = "~=2.0"
+
+[dev-packages]
+black = "*"
+flake8 = "*"
+faker = "*"
+pytest = "*"
+pytest-mock = "*"
+pylint = "*"
