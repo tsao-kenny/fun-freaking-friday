@@ -11,12 +11,14 @@
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {
 			"version": "latest"
-		}
-	}
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
+		},
+		"vscode": {
+			"extensions": [
+			  "ms-python.python",
+			  "ms-python.vscode-pylance"
+			]
+		  }
+		},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
@@ -24,8 +26,21 @@
 	// "postCreateCommand": "cat /etc/os-release",
 
 	// Configure tool-specific properties.
-	// "customizations": {},
-
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.pythonPath": "/usr/local/bin/python3",
+				"python.formatting.provider": "black",
+				"python.formatting.blackPath": "/usr/local/bin/black",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.linting.pylintPath": "/usr/local/bin/pylint",
+				"python.linting.pylintArgs": [
+				"--disable=C0114,C0115,C0116"
+				]
+			}
+		}
+	}
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "devcontainer"
 }

@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+      "ms-python.python",
+      "pylance.pylance",
+      "ms-python.vscode-pylance",
+      "ms-python.python-insiders",
+      "ms-python.vscode-pylance-pack",
+      "ms-python.vscode-pylance-pack-stub"
+    ]
+  }
+  
