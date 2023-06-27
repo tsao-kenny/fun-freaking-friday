@@ -28,8 +28,9 @@ jobs:
       - name: Run Flake8
         run: pipenv run flake8 --config .flake8 .
 
-      - name: Run Pylint
-        run: pipenv run pylint --rcfile=pylint.ini .
+      - name: Run MyPy
+        run: |
+          pipenv run mypy --config-file mypy.ini .
 
       - name: Run Pytest
         run: pipenv run pytest tests/
