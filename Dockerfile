@@ -11,3 +11,5 @@ RUN pipenv sync --system
 COPY . .
 
 WORKDIR /app/src
+
+CMD python main.py

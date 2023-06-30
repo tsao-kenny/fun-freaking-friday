@@ -1,11 +1,14 @@
+"""Main service and handler"""
+
 from collections import defaultdict
+from datetime import datetime
 import json
 import os
 import random
-from typing import Any
-import uuid
-from datetime import datetime
 import sys
+from typing import Any
+from uuid import uuid4
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -17,11 +20,12 @@ QUESTIONS = os.path.join(os.getcwd(), "src", "resources", "questions.json")
 
 
 class App:
+    """Main App handling the fun"""
+
     def __init__(self) -> None:
         self.profiles: dict[str, str] = self.load_profiles()
-        print(self.profiles)
-        self.profile_name: str = None
-        self.profile_data: dict[str, Any] = None
+        self.profile_name: str | None = None
+        self.profile_data: dict[str, Any] | None = None
 
     def main_window(self) -> None:
         print("\nMenu:")
@@ -51,13 +55,13 @@ class App:
         with open(QUESTIONS, "r", encoding="utf-8") as infile:
             questions = json.loads(infile.read())
             random_number = random.randint(1, 500)
-            question = questions[str(random_number)]
+            question: str = questions[str(random_number)]
             return question
 
     def load_profiles(self) -> dict[str, Any]:
         if os.path.exists(PROFILES_FILE):
             with open(PROFILES_FILE, "r") as file:
-                profiles = json.loads(file.read())
+                profiles: dict[str, Any] = json.loads(file.read())
                 if not profiles:
                     profiles = {}
         else:
@@ -76,7 +80,7 @@ class App:
             if profile_name in self.profiles:
                 print("Profile already exists.")
             else:
-                self.profiles[profile_name] = {"profile_name": profile_name, "questions": {}}
+                self.profiles[profile_name] = {"profile_name": profile_name, "questions": {}}  # type: ignore
                 self.save_profiles()
                 print("Profile created successfully.")
         else:
@@ -98,7 +102,7 @@ class App:
             index = int(profile_index) - 1
             if 0 <= index < len(profile_names):
                 self.profile_name = profile_names[index]
-                self.profile_data = self.profiles[self.profile_name]
+                self.profile_data = self.profiles[self.profile_name]  # type: ignore
                 self.fun_window()
             else:
                 print("Invalid profile index.")
@@ -124,7 +128,7 @@ class App:
         print("Ice Breaker Question:")
         print(response)
 
-        entry_id = str(uuid.uuid4())
+        entry_id = str(uuid4())
         timestamp = datetime.now().isoformat()
         answers = []
         answering = True
@@ -136,23 +140,23 @@ class App:
                 break
             answer = input("Response: ")
 
-            rating: str = input("Rate this answer (any number): ")
+            rating = input("Rate this answer (any number): ")
             try:
-                rating = float(rating)
+                rating = float(rating)  # type: ignore
             except ValueError:
                 print("Not an integer, assigning default.")
-                rating = 420.0
+                rating = 420.0  # type: ignore
             answers.append({"name": name, "answer": answer, "rating": rating})
 
         mood = input("How are you feeling (any number)? ")
 
         try:
-            mood = float(mood)
+            mood = float(mood)  # type: ignore
         except ValueError:
             print("Not a number. Assigning default.")
-            mood = -1.0
+            mood = -1.0  # type: ignore
 
-        self.profile_data["questions"][entry_id] = {
+        self.profile_data["questions"][entry_id] = {  # type: ignore
             "question": response,
             "timestamp": timestamp,
             "answers": answers,
@@ -165,9 +169,9 @@ class App:
         self.main_window()
 
     def record_sad(self) -> None:
-        entry_id = str(uuid.uuid4())
+        entry_id = str(uuid4())
         timestamp = datetime.now().isoformat()
-        self.profile_data["questions"][entry_id] = {
+        self.profile_data["questions"][entry_id] = {  # type: ignore
             "question": None,
             "timestamp": timestamp,
             "answers": [],
@@ -184,8 +188,8 @@ class App:
         moods = []
 
         for profile_data in self.profiles.values():
-            profile_name = profile_data["profile_name"]
-            for question_data in profile_data["questions"].values():
+            profile_name: dict[str, Any] = profile_data["profile_name"]  # type: ignore
+            for question_data in profile_data["questions"].values():  # type: ignore
                 mood = question_data["mood"]
                 profiles.append(profile_name)
                 moods.append(mood)
@@ -217,12 +221,12 @@ class App:
         plt.show()
         self.main_window()
 
-    def rating_analysis(self):
+    def rating_analysis(self) -> None:
         # Prepare data for visualization
         name_ratings = defaultdict(list)
 
         for profile_data in self.profiles.values():
-            for question_data in profile_data["questions"].values():
+            for question_data in profile_data["questions"].values():  # type: ignore
                 if "answers" in question_data:
                     for answer in question_data["answers"]:
                         name = answer["name"]
