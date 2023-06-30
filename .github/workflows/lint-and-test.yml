@@ -1,0 +1,36 @@
+name: Lint Code and Run Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 
+
+      - name: Install Pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run Black
+        run: pipenv run black --config pyproject.toml .
+
+      - name: Run Flake8
+        run: pipenv run flake8 --config .flake8 .
+
+      - name: Run MyPy
+        run: |
+          pipenv run mypy --config-file mypy.ini .
+
+      - name: Run Pytest
+        run: pipenv run pytest tests/
