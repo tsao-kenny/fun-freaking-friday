@@ -8,6 +8,7 @@ python_version = "3.11"
 
 [packages]
 customtkinter = "~=5.2"
+requests = "~=2.31"
 matplotlib = "~=3.7"
 pandas = "~=2.0"
 
@@ -18,3 +19,4 @@ faker = "*"
 mypy = "*"
 pytest = "*"
 pytest-mock = "*"
+ipykernel = "*"

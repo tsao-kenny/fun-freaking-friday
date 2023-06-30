@@ -1,18 +1,13 @@
-import customtkinter
+from service import App
 
 
-class App(customtkinter.CTk):
-    def __init__(self) -> None:
-        super().__init__()
-        self.geometry("400x150")
-
-        self.button = customtkinter.CTkButton(self, text="A Button", command=self.button_callback)
-        self.button.pack(padx=20, pady=20)
-
-    def button_callback(self) -> None:
-        print("Hello")
-
+def main():
+    print("=== Fun Freaking Friday App ===")
+    app = App()
+    playing = True
+    while playing:
+        playing = app.main_window()
+        
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    main()
