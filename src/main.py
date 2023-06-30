@@ -1,13 +1,12 @@
 from service import App
 
 
-def main():
+def main() -> None:
     print("=== Fun Freaking Friday App ===")
     app = App()
-    playing = True
-    while playing:
-        playing = app.main_window()
-        
+    while True:
+        _ = app.main_window()
+
 
 if __name__ == "__main__":
     main()

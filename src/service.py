@@ -17,14 +17,13 @@ QUESTIONS = os.path.join(os.getcwd(), "src", "resources", "questions.json")
 
 
 class App:
-
-    def __init__(self):
+    def __init__(self) -> None:
         self.profiles: dict[str, str] = self.load_profiles()
         print(self.profiles)
         self.profile_name: str = None
         self.profile_data: dict[str, Any] = None
 
-    def main_window(self):
+    def main_window(self) -> None:
         print("\nMenu:")
         print("0. Exit")
         print("1. Load a Profile")
@@ -55,7 +54,7 @@ class App:
             question = questions[str(random_number)]
             return question
 
-    def load_profiles(self):
+    def load_profiles(self) -> dict[str, Any]:
         if os.path.exists(PROFILES_FILE):
             with open(PROFILES_FILE, "r") as file:
                 profiles = json.loads(file.read())
@@ -65,13 +64,13 @@ class App:
             profiles = {}
         return profiles
 
-    def save_profiles(self):
+    def save_profiles(self) -> None:
         if not os.path.exists(PROFILES_DIRECTORY):
             os.makedirs(PROFILES_DIRECTORY)
         with open(PROFILES_FILE, "w") as file:
             json.dump(self.profiles, file, indent=4)
 
-    def create_profile(self):
+    def create_profile(self) -> None:
         profile_name = input("Enter Profile Name: ").lower().replace(" ", "_")
         if profile_name:
             if profile_name in self.profiles:
@@ -84,9 +83,7 @@ class App:
             print("Invalid profile name.")
         self.main_window()
 
-    def load_profile(self):
-
-        # self.load_profiles()
+    def load_profile(self) -> None:
         if not self.profiles:
             print("No profiles found.")
             self.main_window()
@@ -108,7 +105,7 @@ class App:
         else:
             print("Invalid input.")
 
-    def fun_window(self):
+    def fun_window(self) -> None:
         print("\n=== Fun Window ===")
         print("Enter 'fun' to retrieve a random ice breaker question.")
         print("Enter 'sad' if you're feeling sad.")
@@ -122,7 +119,7 @@ class App:
             else:
                 print("Invalid command.")
 
-    def get_random_question(self):
+    def get_random_question(self) -> None:
         response = self.get_icebreaker()
         print("Ice Breaker Question:")
         print(response)
@@ -134,15 +131,15 @@ class App:
         while answering:
             print("Record answers (enter done to finish):")
             name = input("Name: ")
-            if name == 'done':
+            if name == "done":
                 answering = False
                 break
             answer = input("Response: ")
-            
+
             rating: str = input("Rate this answer (any number): ")
             try:
                 rating = float(rating)
-            except ValueError as e:
+            except ValueError:
                 print("Not an integer, assigning default.")
                 rating = 420.0
             answers.append({"name": name, "answer": answer, "rating": rating})
@@ -151,7 +148,7 @@ class App:
 
         try:
             mood = float(mood)
-        except ValueError as e:
+        except ValueError:
             print("Not a number. Assigning default.")
             mood = -1.0
 
@@ -161,13 +158,13 @@ class App:
             "answers": answers,
             "fun_master": input("Today's Fun Master: "),
             "mood": mood,
-            "rating": rating
+            "rating": rating,
         }
         self.save_profiles()
         print("Question saved successfully.")
         self.main_window()
 
-    def record_sad(self):
+    def record_sad(self) -> None:
         entry_id = str(uuid.uuid4())
         timestamp = datetime.now().isoformat()
         self.profile_data["questions"][entry_id] = {
@@ -175,22 +172,21 @@ class App:
             "timestamp": timestamp,
             "answers": [],
             "fun_master": None,
-            "mood": 0
+            "mood": 0,
         }
         self.save_profiles()
         print("That sucks.")
         self.main_window()
 
-    def mood_analyis(self):
-
+    def mood_analyis(self) -> None:
         # Prepare data for scatter plot
         profiles = []
         moods = []
 
         for profile_data in self.profiles.values():
-            profile_name = profile_data['profile_name']
-            for question_data in profile_data['questions'].values():
-                mood = question_data['mood']
+            profile_name = profile_data["profile_name"]
+            for question_data in profile_data["questions"].values():
+                mood = question_data["mood"]
                 profiles.append(profile_name)
                 moods.append(mood)
 
@@ -206,15 +202,15 @@ class App:
 
         # Plot mood vs. profile
         plt.scatter(profiles, moods)
-        plt.xlabel('Profile')
-        plt.ylabel('Mood')
-        plt.title('Mood vs. Profile')
+        plt.xlabel("Profile")
+        plt.ylabel("Mood")
+        plt.title("Mood vs. Profile")
         plt.xticks(rotation=90)
 
         # Add mean mood analysis with color-coded lines
         for i, (profile, mean_mood) in enumerate(profile_mean_moods.items()):
             color = profile_colors[i]
-            plt.axhline(y=mean_mood, color=color, linestyle='--', label=f'Mean Mood ({profile}): {mean_mood:.2f}')
+            plt.axhline(y=mean_mood, color=color, linestyle="--", label=f"Mean Mood ({profile}): {mean_mood:.2f}")
 
         plt.legend()
         plt.tight_layout()
@@ -226,11 +222,11 @@ class App:
         name_ratings = defaultdict(list)
 
         for profile_data in self.profiles.values():
-            for question_data in profile_data['questions'].values():
-                if 'answers' in question_data:
-                    for answer in question_data['answers']:
-                        name = answer['name']
-                        rating = answer['rating']
+            for question_data in profile_data["questions"].values():
+                if "answers" in question_data:
+                    for answer in question_data["answers"]:
+                        name = answer["name"]
+                        rating = answer["rating"]
                         name_ratings[name].append(rating)
 
         # Calculate max, min, and mean ratings
@@ -252,13 +248,13 @@ class App:
         x = range(len(names))
         width = 0.25
 
-        plt.bar(x, max_ratings, width, label='Max')
-        plt.bar(x, min_ratings, width, label='Min')
-        plt.bar(x, mean_ratings, width, label='Mean')
+        plt.bar(x, max_ratings, width, label="Max")
+        plt.bar(x, min_ratings, width, label="Min")
+        plt.bar(x, mean_ratings, width, label="Mean")
 
-        plt.xlabel('Name')
-        plt.ylabel('Rating')
-        plt.title('Rating by Name')
+        plt.xlabel("Name")
+        plt.ylabel("Rating")
+        plt.title("Rating by Name")
         plt.xticks(x, names, rotation=90)
         plt.legend()
         plt.tight_layout()

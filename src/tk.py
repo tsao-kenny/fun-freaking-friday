@@ -1,4 +1,4 @@
-import tkinter as tk
+"""import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import json
@@ -180,3 +180,4 @@ class FunWindow(tk.Toplevel):
 if __name__ == "__main__":
     app = ProfileWindow()
     app.mainloop()
+"""
